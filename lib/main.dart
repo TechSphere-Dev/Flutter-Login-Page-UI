@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/Login.dart';
-import 'package:flutter_course/home.dart';
-
 void main() {
   runApp(const MyApp());
 }

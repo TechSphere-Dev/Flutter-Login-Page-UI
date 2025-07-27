@@ -24,7 +24,7 @@ class _pageState extends State<page> {
         padding: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction, // ✅ Validation auto-trigger
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               SizedBox(height: 10),
@@ -44,15 +44,15 @@ class _pageState extends State<page> {
 
               // Username
               TextFormField(
-                cursorColor: Colors.black, // ✅ Black cursor
+                cursorColor: Colors.black,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.person, color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  focusedBorder: OutlineInputBorder( // ✅ Focus border color
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.black , width: 2.5),
+                    borderSide: BorderSide(color: Colors.black, width: 2.5),
                   ),
                   labelText: 'Username',
                   hintText: 'Enter Username',
@@ -77,8 +77,7 @@ class _pageState extends State<page> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.black , width: 2.5),
-
+                    borderSide: BorderSide(color: Colors.black, width: 2.5),
                   ),
                   labelText: 'Email',
                   hintText: 'Enter Email',
@@ -87,9 +86,9 @@ class _pageState extends State<page> {
                   if (value == null || value.trim().isEmpty) {
                     return 'Email is required';
                   }
-                  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+com$');
                   if (!emailRegex.hasMatch(value)) {
-                    return 'Enter a valid email';
+                    return 'Enter a valid email with .com domain';
                   }
                   return null;
                 },
@@ -118,7 +117,7 @@ class _pageState extends State<page> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.black , width: 2.5),
+                    borderSide: BorderSide(color: Colors.black, width: 2.5),
                   ),
                   labelText: 'Password',
                   hintText: 'Enter Password',
