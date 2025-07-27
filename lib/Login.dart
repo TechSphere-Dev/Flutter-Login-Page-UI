@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/home_page.dart';
 
-class page extends StatefulWidget {
-  const page({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<page> createState() => _pageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _pageState extends State<page> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
   bool _isLoading = false;
@@ -160,9 +161,10 @@ class _pageState extends State<page> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Login successful')),
                       );
-
-                      // Navigate to next screen if needed
-                      // Navigator.push(...);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => home()),
+                      );
                     }
                   },
                   child: Container(
