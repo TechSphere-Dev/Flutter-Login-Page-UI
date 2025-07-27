@@ -1,70 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class loginPage extends StatefulWidget {
-  const loginPage({super.key});
+class page extends StatefulWidget {
+  const page({super.key});
 
   @override
-  State<loginPage> createState() => _loginPageState();
+  State<page> createState() => _pageState();
 }
 
-class _loginPageState extends State<loginPage> {
+class _pageState extends State<page> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
+  bool _isLoading = false;
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  String? _emailError;
-  String? _passwordError;
-
-  // Email validation
-  void _validateEmail() {
-    String value = _emailController.text.trim();
-    if (value.isEmpty) {
-      setState(() {
-        _emailError = 'Email is required';
-      });
-    } else {
-      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-      if (!emailRegex.hasMatch(value)) {
-        setState(() {
-          _emailError = 'Enter valid Email';
-        });
-      } else {
-        setState(() {
-          _emailError = null;
-        });
-      }
-    }
-  }
-
-  // Password validation
-  void _validatePassword() {
-    String value = _passwordController.text.trim();
-
-    if (value.isEmpty) {
-      setState(() {
-        _passwordError = 'Password is required';
-      });
-    } else if (value.length < 8) {
-      setState(() {
-        _passwordError = 'Password must be at least 8 characters';
-      });
-    } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-      setState(() {
-        _passwordError = 'Password must have at least one special character';
-      });
-    } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-      setState(() {
-        _passwordError = 'Password must have at least one uppercase letter';
-      });
-    } else {
-      setState(() {
-        _passwordError = null;
-      });
-    }
-  }
+  String? _username;
+  String? _email;
+  String? _password;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +24,7 @@ class _loginPageState extends State<loginPage> {
         padding: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction, // ✅ Validation auto-trigger
           child: Column(
             children: [
               SizedBox(height: 10),
@@ -86,50 +37,75 @@ class _loginPageState extends State<loginPage> {
               ),
               SizedBox(height: 20),
               Text(
-                'Welcome',
+                'Welcome${_username?.isNotEmpty == true ? ', ${_username!}' : ''}',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 40),
 
-              // Email Field
+              // Username
               TextFormField(
-                controller: _emailController,
+                cursorColor: Colors.black, // ✅ Black cursor
                 decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.email_outlined, color: Colors.grey),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.black, width: 1.5),
-                  ),
+                  suffixIcon: Icon(Icons.person, color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  hintText: 'Enter Email',
-                  labelText: 'Email',
-                ),
-                onChanged: (value) => _validateEmail(),
-              ),
-              if (_emailError != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 8),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _emailError!,
-                      style: TextStyle(color: Colors.red, fontSize: 12),
-                    ),
+                  focusedBorder: OutlineInputBorder( // ✅ Focus border color
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.black , width: 2.5),
                   ),
+                  labelText: 'Username',
+                  hintText: 'Enter Username',
                 ),
-
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Username is required';
+                  }
+                  return null;
+                },
+                onSaved: (value) => _username = value?.trim(),
+              ),
               SizedBox(height: 15),
 
-              // Password Field
+              // Email
               TextFormField(
-                controller: _passwordController,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.email, color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.black , width: 2.5),
+
+                  ),
+                  labelText: 'Email',
+                  hintText: 'Enter Email',
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Email is required';
+                  }
+                  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                  if (!emailRegex.hasMatch(value)) {
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
+                onSaved: (value) => _email = value?.trim(),
+              ),
+              SizedBox(height: 15),
+
+              // Password
+              TextFormField(
+                cursorColor: Colors.black,
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
                     ),
                     onPressed: () {
                       setState(() {
@@ -137,80 +113,108 @@ class _loginPageState extends State<loginPage> {
                       });
                     },
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.black, width: 1.5),
-                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  hintText: 'Enter Password',
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.black , width: 2.5),
+                  ),
                   labelText: 'Password',
+                  hintText: 'Enter Password',
                 ),
-                onChanged: (value) => _validatePassword(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Password is required';
+                  }
+                  if (value.length < 8) {
+                    return 'Password must be at least 8 characters';
+                  }
+                  if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                    return 'Include at least one uppercase letter';
+                  }
+                  if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                    return 'Include at least one special character';
+                  }
+                  return null;
+                },
+                onSaved: (value) => _password = value?.trim(),
               ),
-              if (_passwordError != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 8),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _passwordError!,
-                      style: TextStyle(color: Colors.red, fontSize: 12),
+              SizedBox(height: 20),
+
+              // Login Button
+              Material(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(8),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  splashColor: const Color.fromRGBO(255, 255, 255, 0.2),
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+
+                      setState(() => _isLoading = true);
+                      await Future.delayed(Duration(seconds: 2));
+                      setState(() => _isLoading = false);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Login successful')),
+                      );
+
+                      // Navigate to next screen if needed
+                      // Navigator.push(...);
+                    }
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: _isLoading
+                        ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                        : Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-
-              SizedBox(height: 10),
-
-              // Login Button
-              ElevatedButton(
-                onPressed: () {
-                  _validateEmail();
-                  _validatePassword();
-                  if (_emailError == null && _passwordError == null) {
-                    print("Form is valid. Proceed to login.");
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amberAccent,
-                  foregroundColor: Colors.black87,
-                  padding: EdgeInsets.only(left: 100, right: 100),
-                ),
-                child: Text('Login'),
               ),
 
               SizedBox(height: 10),
-
-              Align(
-                alignment: Alignment.center,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Forgot Password',
-                    style: TextStyle(color: Colors.blueAccent),
-                  ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Forgot Password',
+                  style: TextStyle(color: Colors.blueAccent),
                 ),
               ),
 
               SizedBox(height: 120),
-
               OutlinedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.only(left: 100, right: 100),
+                  padding: EdgeInsets.symmetric(horizontal: 100),
                 ),
                 child: Text('Create Account'),
               ),
-
               SizedBox(height: 8),
-
               Text(
                 'TechSphere-Dev',
                 style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black38),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black38,
+                ),
               ),
             ],
           ),
