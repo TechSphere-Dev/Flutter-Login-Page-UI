@@ -198,7 +198,7 @@ class _pageState extends State<page> {
                 ),
               ),
 
-              SizedBox(height: 120),
+              SizedBox(height: 60),
               OutlinedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -206,7 +206,7 @@ class _pageState extends State<page> {
                 ),
                 child: Text('Create Account'),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 5),
               Text(
                 'TechSphere-Dev',
                 style: TextStyle(
