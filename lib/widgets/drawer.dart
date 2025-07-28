@@ -25,7 +25,7 @@ class Mydrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home_outlined),
+              leading: Icon(Icons.home_outlined , color: Colors.blueAccent,),
               title: Text('Home'),
               onTap: () {
                 // handle home tap
@@ -33,7 +33,7 @@ class Mydrawer extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.person_2_outlined),
+              leading: Icon(Icons.person_2_outlined , color: Colors.blueAccent,),
               title: Text('Profile'),
               onTap: () {
                 // handle profile tap
@@ -41,7 +41,7 @@ class Mydrawer extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.email_outlined),
+              leading: Icon(Icons.email_outlined , color: Colors.blueAccent,),
               title: Text('Email me'),
               onTap: () {
                 // handle email tap
@@ -49,7 +49,7 @@ class Mydrawer extends StatelessWidget {
             ),
             Divider(),
             ListTile(
-              leading: Icon(Icons.exit_to_app_outlined),
+              leading: Icon(Icons.exit_to_app_outlined , color: Colors.blueAccent,),
               title: Text('LogOut'),
               onTap: () {
                 Navigator.pushReplacement(

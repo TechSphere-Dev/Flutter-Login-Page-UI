@@ -13,7 +13,6 @@ class _homeState extends State<home> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Catalog App'),
-        backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
           drawer: Mydrawer(),
