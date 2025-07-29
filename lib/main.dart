@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course/Login.dart';
+import 'package:flutter_course/Screens/Login.dart';
 import 'package:flutter_course/widgets/themes.dart';
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: Mytheme.lightTheme(context),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: LoginScreen()
     );
         }
 }
